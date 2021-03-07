@@ -46,9 +46,6 @@ The following package configuration options set up different features for your p
 use_pypi_deployment_with_travis
     Whether to use PyPI deployment with Travis.
 
-command_line_interface
-    Whether to create a console script using Click. Console script entry point will match the project_slug. Options: ['Click', "No command-line interface"]
-
 use_google_docstrings
     Whether to support parsing docstrings in the `Google Python Style Guide`_ format.
 
