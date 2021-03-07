@@ -71,7 +71,17 @@ def lint_pylint(c):
     _run(c, "pylint {}".format(" ".join(PYTHON_DIRS)))
 
 
-@task(lint_flake8, lint_pylint)
+{% if cookiecutter.use_mypy_type_checking == 'y' -%}
+@task
+def lint_mypy(c):
+    """
+    Lint code with mypy
+    """
+    c.run("mypy --config mypy.ini --allow-untyped-decorators")
+
+
+{% endif -%}
+@task(lint_flake8, lint_pylint{% if cookiecutter.use_mypy_type_checking == 'y' %}, lint_mypy{% endif -%})
 def lint(c):
     """
     Run all linting

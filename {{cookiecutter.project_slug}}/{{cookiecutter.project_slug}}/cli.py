@@ -11,7 +11,7 @@ import click
 
 {% if cookiecutter.command_line_interface|lower == 'click' %}
 @click.command()
-def main():
+def main() -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     click.echo("Replace this message by putting your code into "
                "{{cookiecutter.project_slug}}.cli.main")
@@ -19,7 +19,7 @@ def main():
     return 0
 {%- endif %}
 {%- if cookiecutter.command_line_interface|lower == 'argparse' %}
-def main():
+def main() -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     parser = argparse.ArgumentParser()
     parser.add_argument('_', nargs='*')
