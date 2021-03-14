@@ -35,8 +35,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "*"
-typer = "*"
+python = ">=3.6"
+typer = {extras = ["all"], version = "^0.1.0"}
 
 [tool.poetry.dev-dependencies]
 bumpversion = "*"
@@ -52,7 +52,7 @@ tox = "*"
 yapf = "*"
 
 [tool.poetry.scripts]
-{{ cookiecutter.project_slug }} = '{{ cookiecutter.project_slug }}.cli:main'
+{{ cookiecutter.project_slug }} = '{{ cookiecutter.project_slug }}.cli:app'
 
 [build-system]
 requires = ["poetry>=0.12"]

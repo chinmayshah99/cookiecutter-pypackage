@@ -10,7 +10,7 @@ def hello(name: str):
 @app.command()
 def goodbye(name: str, formal: bool = False):
     typer.echo("Replace this message by putting your code into "
-               "{{cookiecutter.project_slug}}.cli.main")
+               "{{cookiecutter.project_slug}}.cli")
     typer.echo("See click documentation at https://typer.tiangolo.com/")
     if formal:
         typer.echo(f"Goodbye Ms. {name}. Have a good day.")
