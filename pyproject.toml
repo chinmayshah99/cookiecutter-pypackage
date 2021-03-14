@@ -1,17 +1,17 @@
 [tool]
 [tool.poetry]
 name = "cookiecutter-pypackage"
-version = "0.2.0"
-description = "Cookiecutter template for a Python package"
-license = "BSD-3-Clause"
-authors = ["Sam Briggs <briggySmalls90@gmail.com>"]
+version = "0.1.0"
+description = "Cookiecutter template for a Typer package"
+license = "MIT License"
+authors = ["Chinmay Shah <hi@chinmayshah.xyz>"]
 readme = "README.rst"
-repository = "https://github.com/briggySmalls/cookiecutter-pypackage"
+repository = "https://github.com/chinmayshah99/cookiecutter-pypackage"
 documentation = "https://briggysmalls.github.io/cookiecutter-pypackage"
 keywords = ['cookiecutter', 'template', 'package']
 
 [tool.poetry.dependencies]
-python = ">=3.5.*"
+python = ">=3.6"
 
 [tool.poetry.dev-dependencies]
 bump2version = "*"

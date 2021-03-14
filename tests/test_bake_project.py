@@ -8,7 +8,7 @@ import yaml
 import datetime
 from cookiecutter.utils import rmtree
 
-from click.testing import CliRunner
+from typer.testing import CliRunner
 
 import importlib
 
@@ -96,6 +96,7 @@ def test_bake_with_defaults(cookies):
         assert 'python_boilerplate' in found_toplevel_files
         assert 'tox.ini' in found_toplevel_files
         assert 'tests' in found_toplevel_files
+        assert 'mypy.ini' in found_toplevel_files
 
 
 @pytest.mark.parametrize("extra_context", [
@@ -120,41 +121,6 @@ def test_bake_and_run_tests(cookies, extra_context):
         # Run the tests
         commands = build_commands(["poetry run invoke test"])
         run_inside_dir(commands, str(result.project))
-
-
-# def test_bake_and_run_travis_pypi_setup(cookies):
-#     # given:
-#     with bake_in_temp_dir(cookies) as result:
-#         project_path = str(result.project)
-#
-#         # when:
-#         travis_setup_cmd = ('python travis_pypi_setup.py'
-#                             ' --repo audreyr/cookiecutter-pypackage'
-#                             ' --password invalidpass')
-#         run_inside_dir(travis_setup_cmd, project_path)
-#         # then:
-#         result_travis_config = yaml.load(
-#             result.project.join(".travis.yml").open()
-#         )
-#         min_size_of_encrypted_password = 50
-#         assert len(
-#             result_travis_config["deploy"]["password"]["secure"]
-#         ) > min_size_of_encrypted_password
-
-
-def test_bake_without_travis_pypi_setup(cookies):
-    with bake_in_temp_dir(
-        cookies,
-        extra_context={'use_pypi_deployment_with_travis': 'n'}
-    ) as result:
-        result_travis_config = yaml.load(
-            result.project.join(".travis.yml").open(),
-            Loader=yaml.FullLoader
-        )
-        assert "deploy" not in result_travis_config
-        assert "python" == result_travis_config["language"]
-        # found_toplevel_files = [f.basename for f in result.project.listdir()]
-
 
 def test_bake_without_author_file(cookies):
     with bake_in_temp_dir(
@@ -234,31 +200,8 @@ def test_not_using_google_docstrings(cookies):
         assert "sphinx.ext.napoleon" not in ''.join(lines)
 
 
-# def test_project_with_hyphen_in_module_name(cookies):
-#     result = cookies.bake(
-#         extra_context={'project_name': 'something-with-a-dash'}
-#     )
-#     assert result.project is not None
-#     project_path = str(result.project)
-#
-#     # when:
-#     travis_setup_cmd = ('python travis_pypi_setup.py'
-#                         ' --repo audreyr/cookiecutter-pypackage'
-#                         ' --password invalidpass')
-#     run_inside_dir(travis_setup_cmd, project_path)
-#
-#     # then:
-#     result_travis_config = yaml.load(
-#         open(os.path.join(project_path, ".travis.yml"))
-#     )
-#     assert "secure" in result_travis_config["deploy"]["password"],\
-#         "missing password config in .travis.yml"
-
-
 @pytest.mark.parametrize("args", [
-    ({'command_line_interface': "No command-line interface"}, False),
     ({'command_line_interface': 'click'}, True),
-    ({'command_line_interface': 'argparse'}, True),
 ])
 def test_bake_with_no_console_script(cookies, args):
     context, is_present = args
@@ -273,29 +216,7 @@ def test_bake_with_no_console_script(cookies, args):
 
 
 def test_bake_with_console_script_cli(cookies):
-    context = {'command_line_interface': 'click'}
-    result = cookies.bake(extra_context=context)
-    project_path, project_slug, project_dir = project_info(result)
-    module_path = os.path.join(project_dir, 'cli.py')
-    module_name = '.'.join([project_slug, 'cli'])
-    spec = importlib.util.spec_from_file_location(module_name, module_path)
-    cli = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(cli)
-    runner = CliRunner()
-    noarg_result = runner.invoke(cli.main)
-    assert noarg_result.exit_code == 0
-    noarg_output = ' '.join([
-        'Replace this message by putting your code into',
-        project_slug])
-    assert noarg_output in noarg_result.output
-    help_result = runner.invoke(cli.main, ['--help'])
-    assert help_result.exit_code == 0
-    assert 'Show this message' in help_result.output
-
-
-def test_bake_with_argparse_console_script_cli(cookies):
-    context = {'command_line_interface': 'argparse'}
-    result = cookies.bake(extra_context=context)
+    result = cookies.bake(extra_context=True)
     project_path, project_slug, project_dir = project_info(result)
     module_path = os.path.join(project_dir, 'cli.py')
     module_name = '.'.join([project_slug, 'cli'])
