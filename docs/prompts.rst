@@ -43,8 +43,6 @@ Options
 
 The following package configuration options set up different features for your project.
 
-use_pypi_deployment_with_travis
-    Whether to use PyPI deployment with Travis.
 
 use_google_docstrings
     Whether to support parsing docstrings in the `Google Python Style Guide`_ format.
